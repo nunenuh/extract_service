@@ -1,10 +1,7 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List, Any, Dict
 
 
 class MachineLearningResponse(BaseModel):
-    prediction: float
-
-
-class HealthResponse(BaseModel):
-    status: bool
+    prediction: Dict
+    time: str

@@ -1,39 +1,23 @@
-from typing import Any
+from typing import Any, List, Text, Dict
+from fastapi import Body
 
-import joblib
+from pydantic.main import BaseModel
 from core.errors import PredictException
 from fastapi import APIRouter, HTTPException
 from loguru import logger
-from models.prediction import HealthResponse, MachineLearningResponse
-from services.predict import MachineLearningModelHandlerScore as model
+from models.prediction import MachineLearningResponse
+from services.predict import MachineLearningModelHandler as model
 
 router = APIRouter()
 
-get_prediction = lambda data_input: MachineLearningResponse(
-    model.predict(data_input, load_wrapper=joblib.load, method="predict_proba")
-)
 
-
-@router.get("/predict", response_model=MachineLearningResponse, name="predict:get-data")
-async def predict(data_input: Any = None):
-    if not data_input:
+@router.post("/predict", response_model=MachineLearningResponse, name="predict:extract-data")
+async def predict(data: Any = Body(..., embed=True)):
+    if not data:
         raise HTTPException(status_code=404, detail=f"'data_input' argument invalid!")
     try:
-        prediction = get_prediction(data_input)
+        result = model.predict(data)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Exception: {e}")
 
-    return MachineLearningResponse(prediction=prediction)
-
-
-@router.get(
-    "/health", response_model=HealthResponse, name="health:get-data",
-)
-async def health():
-    is_health = False
-    try:
-        get_prediction("lorem ipsum")
-        is_health = True
-        return HealthResponse(status=is_health)
-    except Exception:
-        raise HTTPException(status_code=404, detail="Unhealthy")
+    return MachineLearningResponse(prediction=result['prediction'], time=result['time'])
