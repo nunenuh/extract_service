@@ -5,7 +5,7 @@ from core.events import create_start_app_handler
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException
-
+from tests import extract_test
 
 def get_application() -> FastAPI:
     application = FastAPI(title=PROJECT_NAME, debug=DEBUG, version=VERSION)
@@ -19,4 +19,5 @@ def get_application() -> FastAPI:
 app = get_application()
 
 if __name__ == "__main__":
+    extract_test.run_test()
     uvicorn.run("main:app", host="0.0.0.0", port=8081, reload=False, debug=False)
