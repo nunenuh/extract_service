@@ -20,4 +20,4 @@ app = get_application()
 
 if __name__ == "__main__":
     extract_test.run_test()
-    uvicorn.run("main:app", host="0.0.0.0", port=8081, reload=False, debug=False)
+    uvicorn.run("main:app", host="0.0.0.0", port=8080, reload=False, debug=False)
