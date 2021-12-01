@@ -2,7 +2,7 @@
 
 ACCOUNT_ID=720313667338
 REGION=ap-southeast-1
-IMAGE_NAME=extract_service_app
+IMAGE_NAME=extract_service
 REPOSITORY_NAME=extract_service
 
 aws ecr get-login-password | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME

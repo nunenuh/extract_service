@@ -1,8 +1,9 @@
 version: "3"
 
 services:
-  app:
+  extract_service:
     build: .
+    image: extract_service
     ports:
       - "8081:8081"
     env_file:
