@@ -79,4 +79,4 @@ spec:
             service:
               name: extract-service
               port:
-                number: 5000
+                number: 8080
